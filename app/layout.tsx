@@ -1,13 +1,14 @@
+import BottomMenu from "@/components/bottomMenu";
 import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Partidos App",
-  description: "Listado de partidos con Supabase, Tailwind y PWA",
+  title: "Sagrerenc",
+  description: "Llistat partits hoquei Sagrerenc",
   themeColor: "#0ea5e9",
   icons: {
     icon: "/favicon.ico",
-    apple: "/icon-192.png",
+    apple: "/sagrerencicon-192.png",
     other: [
       { rel: "icon", url: "/sagrerencicon-192.png" },
       { rel: "icon", url: "/sagrerencicon-512.png" },
@@ -27,7 +28,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0ea5e9" />
       </head>
-      <body>{children}</body>
+      <body>{children}
+                <BottomMenu />
+
+      </body>
     </html>
   );
 }

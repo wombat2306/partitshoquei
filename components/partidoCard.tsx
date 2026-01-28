@@ -4,6 +4,16 @@ export default function PartidoCard({ partido }: any) {
   const [open, setOpen] = useState(false);
         console.log("Render PartidoCard", partido.id);
 
+  const genero: Record<string, string> = {
+    4290: '/Fem13.png',
+    4168: '/MixPB.png',
+  };
+
+  const [golesLocal, golesVisitante] = partido.resultado
+  ? partido.resultado.split("-")
+  : ["-", "-"];
+
+
   return (
 
 <div className="border-b border-gray-200 px-4 py-3 w-full">
@@ -14,8 +24,9 @@ export default function PartidoCard({ partido }: any) {
         className="flex items-center justify-between gap-3"
         onClick={() => setOpen(!open)}
       >
-      <img src="/Fem13.png" className="w-5 h-5 mx-auto"
-          style={{ width: "20px", height: "20px", objectFit: "contain" }} />
+      <img 
+          src={genero[partido.idliga] ?? '/default.png'} className="w-5 h-5 mx-auto"
+          style={{ width: "25px", height: "25px", objectFit: "contain" }} />
        <svg width="30" height="30" viewBox="0 0 100 100" className="flex-shrink-0">
           <circle cx="50" cy="50" r="40"  stroke="black" strokeWidth="3"  fill="white"/>
           <text x="50%" y="50%" textAnchor="middle" fill="red" fontSize="40" fontWeight="bold" dy=".3em" >PB</text>
@@ -33,22 +44,35 @@ export default function PartidoCard({ partido }: any) {
 
         {/* Iconos */}
         
-        <img src={partido.escudovisitante} className="w-5 h-5 mx-auto" 
-          style={{ width: "20px", height: "20px", objectFit: "contain" }}/>
-        <span className="text-xs text-gray-600 "> VS </span>
         <img src={partido.escudolocal} className="w-5 h-5 mx-auto" 
-          style={{ width: "20px", height: "20px", objectFit: "contain" }}/>
+          style={{ width: "25px", height: "25px", objectFit: "contain" }}/>
+        <span className="text-xs text-gray-600 "> VS </span>
+        <img src={partido.escudovisitante} className="w-5 h-5 mx-auto" 
+          style={{ width: "25px", height: "25px", objectFit: "contain" }}/>
 
       </div>
 
       {/* ===== LINEA SECUNDARIA (TOGGLE) ===== */}
       {open && (
-        <div className="mt-2 text-sm font-semibold text-gray-800">
-          {partido.local}{" "}
-          <span className="text-gray-400 font-normal">vs</span>{" "}
-          {partido.visitante}
-        </div>
-      )}
+  <div className="mt-2 space-y-1 text-sm font-semibold text-gray-800">
+    {/* LOCAL */}
+    <div className="flex items-center justify-between">
+      <span className="truncate">{partido.local}</span>
+      <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">
+        {golesLocal}
+      </span>
+    </div>
+
+    {/* VISITANTE */}
+    <div className="flex items-center justify-between">
+      <span className="truncate">{partido.visitante}</span>
+      <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">
+        {golesVisitante}
+      </span>
+    </div>
+  </div>
+)}
+
 
     </div>
 
