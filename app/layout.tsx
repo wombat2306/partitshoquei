@@ -1,4 +1,6 @@
 import BottomMenu from "@/components/bottomMenu";
+import { EquiposProvider } from '@/app/context/EquiposContext'
+
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -28,8 +30,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0ea5e9" />
       </head>
-      <body>{children}
-                <BottomMenu />
+      <body>
+        <EquiposProvider>{children}</EquiposProvider>
+        <BottomMenu />
 
       </body>
     </html>
