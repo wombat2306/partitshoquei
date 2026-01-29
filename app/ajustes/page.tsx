@@ -43,7 +43,7 @@ export default function Ajustes() {
               style={{ width: '20px', height: '20px', objectFit: 'contain' }}
             />
             <img
-              src={e.etiqueta?.toLowerCase().includes("sagrerenc") ? "/sagrerencicon-512.png" : "/ceeb.png"}
+              src={e.etiqueta?.toLowerCase().includes("sagrerenc") ? "/sagrerencicon-512.png" : "/cpc.png"}
               className="w-5 h-5 mx-auto"
               style={{ width: '20px', height: '20px', objectFit: 'contain' }}
             />

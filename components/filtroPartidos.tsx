@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import WeekendDropdown from './weekendDropdown'
+import LlistatClubs from './filtroClubs'
+
+
 
 export default function Filtros({ onFiltrar }: any) {
   const [equipo, setEquipo] = useState('')
@@ -15,8 +18,8 @@ export default function Filtros({ onFiltrar }: any) {
   return (
     <div className="p-4 bg-white shadow rounded-xl">
       <div className="flex gap-2 items-center">
+        <LlistatClubs />
         <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
-
         <button
           onClick={() => onFiltrar({ equipo, weekend })}
           className="bg-blue-600 text-white p-2 rounded"

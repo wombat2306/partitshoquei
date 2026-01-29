@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import PartidoCard from '@/components/partidoCard'
-import Filtros from '@/components/filtros'
 import { useEquipos } from '@/app/context/EquiposContext'
+import Filtros from '@/components/filtroPartidos'
 
 
 export default function Home() {

@@ -2,11 +2,19 @@ import { useState } from "react";
 
 export default function PartidoCard({ partido }: any) {
   const [open, setOpen] = useState(false);
-        console.log("Render PartidoCard", partido.id);
+        //console.log("Render PartidoCard", partido.id);
 
   const genero: Record<string, string> = {
-    4290: '/Fem13.png',
-    4168: '/MixPB.png',
+    4290: '/fem.png', // Fem13
+    4168: '/fem.png', // MiniFem
+    4381: '/Mixte.png', // Alevi
+    4335: '/MIXT.png', // Enzo
+  };
+  const categoria: Record<string, string> = {
+    4290: '13',
+    4168: 'MI',
+    4381: 'AL',
+    4335: 'AL', // Enzo
   };
 
   const [golesLocal, golesVisitante] = partido.resultado
@@ -29,7 +37,7 @@ export default function PartidoCard({ partido }: any) {
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
        <svg width="30" height="30" viewBox="0 0 100 100" className="flex-shrink-0">
           <circle cx="50" cy="50" r="40"  stroke="black" strokeWidth="3"  fill="white"/>
-          <text x="50%" y="50%" textAnchor="middle" fill="red" fontSize="40" fontWeight="bold" dy=".3em" >PB</text>
+          <text x="50%" y="50%" textAnchor="middle" fill="red" fontSize="40" fontWeight="bold" dy=".3em" >{categoria[partido.idliga] ?? '??'}</text>
         </svg>
       
       {/* Fecha */}
