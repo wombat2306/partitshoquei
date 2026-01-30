@@ -8,13 +8,13 @@ export default function PartidoCard({ partido }: any) {
     4290: '/fem.png', // Fem13
     4168: '/fem.png', // MiniFem
     4381: '/Mixte.png', // Alevi
-    4335: '/MIXT.png', // Enzo
+    4335: '/Mixte.png', // Enzo
   };
   const categoria: Record<string, string> = {
-    4290: '13',
-    4168: 'MI',
-    4381: 'AL',
-    4335: 'AL', // Enzo
+    4290: 'fem13.png',
+    4168: 'femMini.png',
+    4381: 'alevi.png',
+    4335: 'prebe.png', // Enzo
   };
 
   const [golesLocal, golesVisitante] = partido.resultado
@@ -35,10 +35,15 @@ export default function PartidoCard({ partido }: any) {
       <img 
           src={genero[partido.idliga] ?? '/default.png'} className="w-5 h-5 mx-auto"
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
+      <img 
+          src={categoria[partido.idliga] ?? '/default.png'} className="w-5 h-5 mx-auto"
+          style={{ width: "25px", height: "25px", objectFit: "contain" }} />
+       
        <svg width="30" height="30" viewBox="0 0 100 100" className="flex-shrink-0">
           <circle cx="50" cy="50" r="40"  stroke="black" strokeWidth="3"  fill="white"/>
           <text x="50%" y="50%" textAnchor="middle" fill="red" fontSize="40" fontWeight="bold" dy=".3em" >{categoria[partido.idliga] ?? '??'}</text>
         </svg>
+      
       
       {/* Fecha */}
       <span className="text-xs font-medium text-gray-600">
