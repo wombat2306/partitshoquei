@@ -15,7 +15,13 @@ export default function Home() {
     console.log('Filtro:', filtros);
     let query = supabase
       .from('partido')
-      .select('*')
+        .select(`
+          *,
+          equipo:idequipo (
+            categoria,
+            fecapa
+          )
+        `)
       //.in('equipo_id', filtros.)
       .order('fecha_date', { ascending: true })
 
@@ -23,7 +29,6 @@ export default function Home() {
       query = query
         .in('idequipo', equiposSeleccionados.map(e => e.id))
     }
-
 
     if (filtros?.weekend) {
       query = query
@@ -33,7 +38,9 @@ export default function Home() {
     
     console.log("QUERY : " + query);
 
+
     const { data } = await query
+    console.log("data : " + data);
     setPartidos(data || [])
   }
 

@@ -4,17 +4,15 @@ export default function PartidoCard({ partido }: any) {
   const [open, setOpen] = useState(false);
         //console.log("Render PartidoCard", partido.id);
 
-  const genero: Record<string, string> = {
-    4290: '/fem.png', // Fem13
-    4168: '/fem.png', // MiniFem
-    4381: '/Mixte.png', // Alevi
-    4335: '/Mixte.png', // Enzo
+  const liga: Record<string, string> = {
+    ceeb: '/ceeb.png',
+    fecapa: '/fecapa.png'
   };
   const categoria: Record<string, string> = {
-    4290: 'fem13.png',
-    4168: 'femMini.png',
-    4381: 'alevi.png',
-    4335: 'prebe.png', // Enzo
+    fem13: '/fem13.png', // Fem13
+    minifem: '/femMini.png', // MiniFem
+    alevi: '/alevi.png', // Alevi
+    prebe: '/prebe.png', // Enzo
   };
 
   const [golesLocal, golesVisitante] = partido.resultado
@@ -27,23 +25,18 @@ export default function PartidoCard({ partido }: any) {
 <div className="border-b border-gray-200 px-4 py-3 w-full">
 
      
-      {/* ===== LINEA PRINCIPAL (FIJA) ===== */}
-      <div 
-        className="flex items-center justify-between gap-3"
-        onClick={() => setOpen(!open)}
-      >
+    {/* ===== LINEA PRINCIPAL (FIJA) ===== */}
+    <div 
+      className="flex items-center justify-between gap-3"
+      onClick={() => setOpen(!open)}
+    >
       <img 
-          src={genero[partido.idliga] ?? '/default.png'} className="w-5 h-5 mx-auto"
+          src={partido.equipo?.fecapa ? '/fecapa.png' : '/ceeb.png'} 
+          className="w-5 h-5 mx-auto"
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
       <img 
-          src={categoria[partido.idliga] ?? '/default.png'} className="w-5 h-5 mx-auto"
+          src={categoria[partido.equipo?.categoria] ?? '/default.png'} className="w-5 h-5 mx-auto"
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-       
-       <svg width="30" height="30" viewBox="0 0 100 100" className="flex-shrink-0">
-          <circle cx="50" cy="50" r="40"  stroke="black" strokeWidth="3"  fill="white"/>
-          <text x="50%" y="50%" textAnchor="middle" fill="red" fontSize="40" fontWeight="bold" dy=".3em" >{categoria[partido.idliga] ?? '??'}</text>
-        </svg>
-      
       
       {/* Fecha */}
       <span className="text-xs font-medium text-gray-600">
@@ -51,7 +44,7 @@ export default function PartidoCard({ partido }: any) {
         </span>
 
         {/* Hora */}
-      <span className="text-xs text-gray-600 ">
+        <span className="text-xs text-gray-600 ">
           {partido.hora}
         </span>
 
@@ -63,11 +56,11 @@ export default function PartidoCard({ partido }: any) {
         <img src={partido.escudovisitante} className="w-5 h-5 mx-auto" 
           style={{ width: "25px", height: "25px", objectFit: "contain" }}/>
 
-      </div>
+    </div>
 
       {/* ===== LINEA SECUNDARIA (TOGGLE) ===== */}
-      {open && (
-  <div className="mt-2 space-y-1 text-sm font-semibold text-gray-800">
+    {open && (
+    <div className="mt-2 space-y-1 text-sm font-semibold text-gray-800">
     {/* LOCAL */}
     <div className="flex items-center justify-between">
       <span className="truncate">{partido.local}</span>
