@@ -15,10 +15,14 @@ export default function Filtros({ onFiltrar }: any) {
     setWeekend(weekend)
   }
 
+  const setClubSeleccionado = (club: any) => {
+
+  }
+
   return (
     <div className="p-4 bg-white shadow rounded-xl">
       <div className="flex gap-2 items-center">
-        <LlistatClubs />
+        <LlistatClubs onSelect={setClubSeleccionado} />
         <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
         <button
           onClick={() => onFiltrar({ equipo, weekend })}
