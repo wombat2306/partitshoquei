@@ -9,7 +9,11 @@ type Equip = {
   urlEscudo: string
 }
 
-export default function LlistatClubs() {
+type Props = {
+  onSelect: (club: Equip) => void
+}
+
+export default function LlistatClubs({ onSelect }: Props) {
   const [equips, setEquips] = useState<Equip[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -31,20 +35,23 @@ export default function LlistatClubs() {
     carregarEquips()
   }, [])
 
-  if (loading) {
-    return <p className="text-center">Carregant equips…</p>
-  }
+  if (loading) return <p className="text-center">Carregant equips…</p>
 
   return (
     <div className="flex gap-2">
       {equips.map(equip => (
+        <button
+          key={equip.id}
+          onClick={() => onSelect(equip)}
+          className="p-1 rounded hover:bg-gray-100"
+        >
           <img
             src={equip.urlEscudo}
             alt={equip.nombre}
             title={equip.nombre}
             className="h-6 w-6 object-contain hover:scale-110 transition-transform"
           />
-
+        </button>
       ))}
     </div>
   )
