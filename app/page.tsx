@@ -31,16 +31,17 @@ export default function Home() {
     }
 
     if (filtros?.weekend) {
-      query = query
-        .filter('fecha_date', 'gte', filtros.weekend.start.toISOString().split('T')[0])
-        .filter('fecha_date', 'lte', filtros.weekend.end.toISOString().split('T')[0])
-    }
-    
-    console.log("QUERY : " + query);
 
+      console.log("Weekend start : " + filtros.weekend.start);
+      console.log("Weekend end : " + filtros.weekend.end);
+
+      filtros.weekend.end.setHours(23, 59, 59, 999);
+      query = query
+        .filter('fecha_date', 'gte', filtros.weekend.start.toISOString())
+        .filter('fecha_date', 'lte', filtros.weekend.end.toISOString())
+    }
 
     const { data } = await query
-    console.log("data : " + data);
     setPartidos(data || [])
   }
 

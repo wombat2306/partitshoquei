@@ -10,6 +10,8 @@ export default function Filtros({ onFiltrar }: any) {
   const handleSelect = (weekend: any) => {
     console.log('Finde seleccionado:', weekend)
     setWeekend(weekend)
+    onFiltrar({ equipo, weekend }) // Llama a la función de filtrado
+
   }
 
   return (
