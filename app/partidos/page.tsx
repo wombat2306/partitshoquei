@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import PartidoCard from '@/components/partidoCard'
 import { useEquipos } from '@/app/context/EquiposContext'
-import Filtros from '@/components/filtroPartidos'
-
+import FiltroPartidos from '@/components/filtroPartidos'
+import type { Equipo } from '@/app/types/equipo'
 
 export default function Home() {
   const [partidos, setPartidos] = useState<any[]>([])
@@ -16,7 +16,6 @@ export default function Home() {
     let query = supabase
       .from('partido')
       .select('*')
-      //.in('equipo_id', filtros.)
       .order('fecha_date', { ascending: true })
 
     if (equiposSeleccionados.length > 0) {
@@ -44,7 +43,8 @@ export default function Home() {
   return (
     <main className="p-4 max-w-md mx-auto space-y-4">
       <h1 className="text-2xl font-bold text-center">Partidos</h1>
-      <Filtros onFiltrar={cargarPartidos} />
+      
+      <FiltroPartidos onFiltrar={cargarPartidos} />
 
       <div className="space-y-3">
         {partidos.map(p => (

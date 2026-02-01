@@ -9,10 +9,11 @@ export default function PartidoCard({ partido }: any) {
     fecapa: '/fecapa.png'
   };
   const categoria: Record<string, string> = {
-    fem13: '/fem13.png', // Fem13
-    minifem: '/femMini.png', // MiniFem
-    alevi: '/alevi.png', // Alevi
-    prebe: '/prebe.png', // Enzo
+    femSr: '/fem13.png', 
+    fem13: '/fem13.png', 
+    minifem: '/femMini.png', 
+    alevi: '/alevi.png', 
+    prebe: '/prebe.png', 
   };
 
   const [golesLocal, golesVisitante] = partido.resultado
@@ -35,10 +36,10 @@ export default function PartidoCard({ partido }: any) {
           className="w-5 h-5 mx-auto"
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
       <img 
-          src={categoria[partido.equipo?.categoria] ?? '/default.png'} className="w-5 h-5 mx-auto"
+          src={'/' + partido.equipo?.categoria + '.png'} className="w-5 h-5 mx-auto"
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
       
-      {/* Fecha */}
+      {/* Fecha   src={categoria[partido.equipo?.categoria] ?? '/default.png'} className="w-5 h-5 mx-auto" */}
       <span className="text-xs font-medium text-gray-600">
           {partido.fecha} 
         </span>

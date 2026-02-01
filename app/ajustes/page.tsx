@@ -3,13 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useEquipos } from '@/app/context/EquiposContext'
-
-type Equipo = {
-  id: string
-  nombre: string
-  fecapa?: boolean
-  etiqueta?: string
-}
+import type { Equipo } from '@/app/types/equipo'
 
 export default function Ajustes() {
   const { equiposSeleccionados, toggleEquipo } = useEquipos()
