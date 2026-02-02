@@ -17,13 +17,13 @@ export default function FiltroPartidos({ onFiltrar }: any) {
   const handleSelect = (weekend: any) => {
     console.log('Finde seleccionado:', weekend)
     setWeekend(weekend)
+    onFiltrar({ weekend: weekend , equipos: seleccionados  })
   }
 
   useEffect(() => {
     console.log('Equipos seleccionados:', seleccionados)
+    onFiltrar({ weekend: weekend , equipos: seleccionados  })
   }, [seleccionados])
-
-  //<LlistatClubs onSelect={setClubSeleccionado} />
 
   return (
     <div className="p-4 bg-white shadow rounded-xl">
@@ -40,12 +40,6 @@ export default function FiltroPartidos({ onFiltrar }: any) {
           onConfirm={setSeleccionados}
         />
         <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
-        <button
-          onClick={() => onFiltrar({ equipos: seleccionados, weekend })}
-          className="bg-blue-600 text-white p-2 rounded"
-        >
-          🔍
-        </button>
       </div>
     </div>
   )

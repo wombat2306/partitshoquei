@@ -15,23 +15,25 @@ export default function Home() {
     console.log('Filtro:', filtros);
     let query = supabase
       .from('partido')
-      .select('*')
+      .select(`*, equipo:idequipo (categoria, fecapa)`)
       .order('fecha_date', { ascending: true })
 
-    if (equiposSeleccionados.length > 0) {
+    console.log('longitud filtro.equipos:', filtros.equipos.length);
+    if (filtros.equipos.length > 0) {
       query = query
-        .in('idequipo', equiposSeleccionados.map(e => e.id))
+        .in('idequipo',filtros.equipos.map((e: { id: number }) => e.id))
     }
-
 
     if (filtros?.weekend) {
+      const start = new Date(filtros.weekend.start)
+      const end = new Date(filtros.weekend.end)
+      end.setHours(23, 59, 59, 999)
+
       query = query
-        .filter('fecha_date', 'gte', filtros.weekend.start.toISOString().split('T')[0])
-        .filter('fecha_date', 'lte', filtros.weekend.end.toISOString().split('T')[0])
+        .filter('fecha_date', 'gte', start.toISOString())
+        .filter('fecha_date', 'lte', end.toISOString())
     }
     
-    console.log("QUERY : " + query);
-
     const { data } = await query
     setPartidos(data || [])
   }
