@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation'
 const items = [
   { href: '/', label: 'Favoritos', icon: '⭐' },
   { href: '/partidos', label: 'Todos', icon: '🔴' },
-  { href: '/clasificacion', label: 'Clasificación', icon: '📊' },
+  { href: '/clasificacion', label: 'Clasificación', icon: '🏆' },
   { href: '/ajustes', label: 'Ajustes', icon: '⚙️' },
+  //{ href: '/social-agenda', label: 'XXSS', icon: '📲' },
 ]
 
 export default function BottomMenu() {

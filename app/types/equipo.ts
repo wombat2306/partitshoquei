@@ -3,4 +3,5 @@ export type Equipo = {
   nombre: string
   fecapa?: boolean
   etiqueta?: string
+  grupo?: string
 }

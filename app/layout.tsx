@@ -30,10 +30,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0ea5e9" />
       </head>
-      <body>
+      <body className="pb-20">
         <EquiposProvider>{children}</EquiposProvider>
         <BottomMenu />
-
       </body>
     </html>
   );
