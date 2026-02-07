@@ -2,6 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabaseClient' 
+import { format } from 'date-fns'
 
 const items = [
   { href: '/', label: 'Favoritos', icon: '⭐' },
@@ -14,8 +17,41 @@ const items = [
 export default function BottomMenu() {
   const pathname = usePathname()
 
+  const [welcomeText, setWelcomeText] = useState('')
+
+  useEffect(() => {
+    async function loadData() {
+      const { data, error } = await supabase
+        .from('ejecucionbatch')
+        .select('final')
+        .order('inicio', { ascending: false })
+        .limit(1)
+
+      if (error) {
+        console.log('Supabase error:', error)
+        return
+      }
+
+      console.log('data :', data)
+      if (data?.length) {
+        const timestamp = data[0].final
+        const date = new Date(timestamp)
+
+        const formatted = format(date, 'dd/MM/yyyy HH:mm')
+        console.log(formatted)  // 23/05/2026 14:00
+        setWelcomeText(formatted)
+      }
+    }
+
+    loadData()
+  }, [])
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      {/* FRASE ENCIMA DEL MENÚ */}
+      <div className="text-center text-sm text-gray-500 py-1">
+        Dades actualitzades el <span className="font-semibold">{welcomeText}</span>
+      </div>
       <ul className="flex justify-around">
         {items.map(item => {
           const active = pathname === item.href

@@ -40,12 +40,12 @@ export default function PartidoCard({ partido }: any) {
           style={{ width: "25px", height: "25px", objectFit: "contain" }} />
       
       {/* Fecha   src={categoria[partido.equipo?.categoria] ?? '/default.png'} className="w-5 h-5 mx-auto" */}
-      <span className="text-xs font-medium text-gray-600">
+      <span className="text-base font-medium text-gray-600">
           {partido.fecha} 
         </span>
 
         {/* Hora */}
-        <span className="text-xs text-gray-600 ">
+        <span className="text-base text-gray-600 ">
           {partido.hora}
         </span>
 
@@ -53,7 +53,7 @@ export default function PartidoCard({ partido }: any) {
         
         <img src={partido.escudolocal} className="w-5 h-5 mx-auto" 
           style={{ width: "25px", height: "25px", objectFit: "contain" }}/>
-        <span className="text-xs text-gray-600 "> VS </span>
+        <span className="text-base text-gray-600 "> VS </span>
         <img src={partido.escudovisitante} className="w-5 h-5 mx-auto" 
           style={{ width: "25px", height: "25px", objectFit: "contain" }}/>
 
