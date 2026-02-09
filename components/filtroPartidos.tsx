@@ -38,6 +38,7 @@ export default function FiltroPartidos({ onFiltrar }: any) {
           isOpen={open}
           onClose={() => setOpen(false)}
           onConfirm={setSeleccionados}
+          modo="multiple"
         />
         <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
       </div>

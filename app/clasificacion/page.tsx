@@ -41,19 +41,25 @@ export default function Home() {
       
       <button
         onClick={() => setOpen(true)}
-        className="px-2 py-1 bg-white-600 text-white border border-blue-500 rounded"> equipos
-        👥
+        className="px-2 py-1 bg-white-600 text-blue border border-blue-500 rounded">
+          👥   <span>Selecciona equipo</span>
         </button>
         <ModalSelectorEquipos
             isOpen={open}
             onClose={() => setOpen(false)}
             onConfirm={setSeleccionados}
+            modo="directa"
       />
-      <img 
+      <div className="flex items-center justify-center gap-2">
+        <img 
           src={seleccionados[0]?.fecapa ? '/fecapa.png' : '/ceeb.png'} 
-          className="w-5 h-5 mx-auto"
-          style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-      <h2 className="text-2xl font-bold text-center"> {seleccionados[0]?.grupo}</h2>
+          className="w-6 h-6"
+          style={{ objectFit: "contain" }}
+        />
+        <h2 className="text-lg font-bold">
+          {seleccionados[0]?.grupo}
+        </h2>
+      </div>
 
       <div className="space-y-3">
         {clasificacion.map(p => (
