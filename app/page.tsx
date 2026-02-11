@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient'
 import PartidoCard from '@/components/partidoCard'
 import Filtros from '@/components/filtros'
 import { useEquipos } from '@/app/context/EquiposContext'
+import { marcarConflictos } from '@/utils/marcarConflictos'
 
 export default function Home() {
   const [partidos, setPartidos] = useState<any[]>([])
@@ -32,7 +33,15 @@ export default function Home() {
     }
 
     const { data } = await query
-    setPartidos(data || [])
+
+    if (data) {
+      const partidosConConflicto = marcarConflictos(data)
+      setPartidos(partidosConConflicto)
+    } else {
+      setPartidos([])
+    }
+
+    //setPartidos(data || [])
   }, [equiposSeleccionados])
 
   // SOLO se ejecuta cuando hay filtros válidos

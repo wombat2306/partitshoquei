@@ -6,6 +6,7 @@ import PartidoCard from '@/components/partidoCard'
 import { useEquipos } from '@/app/context/EquiposContext'
 import FiltroPartidos from '@/components/filtroPartidos'
 import type { Equipo } from '@/app/types/equipo'
+import { marcarConflictos } from '@/utils/marcarConflictos'
 
 export default function Home() {
   const [partidos, setPartidos] = useState<any[]>([])
@@ -29,13 +30,25 @@ export default function Home() {
       const end = new Date(filtros.weekend.end)
       end.setHours(23, 59, 59, 999)
 
-      query = query
-        .filter('fecha_date', 'gte', start.toISOString())
-        .filter('fecha_date', 'lte', end.toISOString())
+      query = query.filter('fecha_date', 'gte', start.toISOString())
+
+      if (filtros?.fechaFin){
+        const end2 = new Date(filtros.fechaFin)
+        end2.setHours(23, 59, 59, 999)
+        query = query.filter('fecha_date', 'lte', end2.toISOString())
+      }else {
+        query = query.filter('fecha_date', 'lte', end.toISOString())
+      }
     }
     
     const { data } = await query
-    setPartidos(data || [])
+    if (data) {
+      const partidosConConflicto = marcarConflictos(data)
+      setPartidos(partidosConConflicto)
+    } else {
+      setPartidos([])
+    }
+    //setPartidos(data || [])
   }
 
   useEffect(() => {

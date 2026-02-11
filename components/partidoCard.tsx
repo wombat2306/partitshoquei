@@ -20,11 +20,28 @@ export default function PartidoCard({ partido }: any) {
   ? partido.resultado.split("-")
   : ["-", "-"];
 
+  const modificadoReciente = (() => {
+    if (!partido.ultimoCambio) return false
+
+    const fechaCambio = new Date(partido.ultimoCambio)
+    const hoy = new Date()
+    const hace16Dias = new Date()
+    hace16Dias.setDate(hoy.getDate() - 16)
+
+    return fechaCambio >= hace16Dias
+  })()
+
+  // Para futuro
+  const tieneConflicto = partido.conflicto ?? false
 
   return (
 
-<div className="border-b border-gray-200 px-4 py-3 w-full">
-
+  <div
+    className={`
+      border-b border-gray-200 px-4 py-3 w-full
+      ${tieneConflicto ? 'border-l-[5px] border-red-500' : ''}
+      ${!tieneConflicto && modificadoReciente ? 'border-l-[5px] border-yellow-400' : ''}
+    `}>
      
     {/* ===== LINEA PRINCIPAL (FIJA) ===== */}
     <div 

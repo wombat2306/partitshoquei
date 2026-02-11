@@ -64,7 +64,7 @@ export default function WeekendDropdown({
     <select
       value={selectedId}
       onChange={handleChange}
-      className="border rounded px-3 py-2"
+      className="border rounded px-2 py-2"
     >
       <option value="">Cap de setmana</option>
 
