@@ -69,7 +69,12 @@ export default function FiltroPartidos({ onFiltrar }: any) {
       fechaFin,
       equipos: seleccionados
     })
-  }, [seleccionados])
+  }, [weekend, fechaFin, seleccionados])
+
+  useEffect(() => {
+    if (!weekend) setFechaFin('')
+  }, [weekend])
+
 
   // 🔹 Fecha mínima = 1 día después de weekend.end
   const getMinFechaFin = (w: Weekend) => {
@@ -103,16 +108,18 @@ export default function FiltroPartidos({ onFiltrar }: any) {
           <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
         </div>
 
-        <div className="col-span-2 flex justify-end">
-          <input
-            type="date"
-            value={fechaFin}
-            onChange={handleFechaFinChange}
-            min={minFechaFin}
-            disabled={!weekend}
-            className="border rounded px-2 py-1"
-          />
-        </div>
+        {weekend && (
+          <div className="col-span-2 flex justify-end">
+            <input
+              type="date"
+              value={fechaFin}
+              onChange={handleFechaFinChange}
+              min={minFechaFin}
+              className="border rounded px-2 py-1"
+            />
+          </div>
+        )}
+
       </div>
     </div>
   )
