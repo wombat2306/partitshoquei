@@ -12,7 +12,7 @@ export default function Filtros({ onChangeFilters }: any) {
   return (
     <div className="p-4 bg-white shadow rounded-xl">
       <div className="flex gap-2 items-center">
-        <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
+        <WeekendDropdown monthsAhead={4} onSelect={handleSelect} />
       </div>
     </div>
   )

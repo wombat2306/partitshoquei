@@ -15,14 +15,26 @@ export default function WeekendDropdown({
   const weekends = useMemo(() => getWeekends(monthsAhead), [monthsAhead])
   const [selectedId, setSelectedId] = useState<string>('')
 
-  // Encuentra el fin de semana actual
+  // Encuentra el fin de semana actual o el siguiente
   const getCurrentWeekend = () => {
     const now = new Date()
-    return weekends.find((w) => {
-      const start = new Date(w.start) // Asegúrate de que `startDate` esté en el formato correcto
-      const end = new Date(w.end)
-      return start <= now && end >= now
-    })
+    const dayOfWeek = now.getDay() // 0 = Domingo, 6 = Sábado
+
+    // Si es fin de semana (sábado o domingo), seleccionamos el actual
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      return weekends.find((w) => {
+        const start = new Date(w.start)
+        const end = new Date(w.end)
+        return start <= now && end >= now
+      })
+    } else {
+      // Si es entre semana, seleccionamos el siguiente fin de semana
+      return weekends.find((w) => {
+        const start = new Date(w.start)
+        const end = new Date(w.end)
+        return start > now // Solo seleccionar el siguiente fin de semana
+      })
+    }
   }
 
   // Llamado al montar el componente para restaurar la selección desde localStorage
@@ -32,15 +44,15 @@ export default function WeekendDropdown({
 
     if (savedId && savedId !== selectedId) {
       // Si hay un valor guardado y es diferente al seleccionado actual, lo restauramos
-      setSelectedId(savedId) 
+      setSelectedId(savedId)
       const selectedWeekend = weekends.find(w => w.id === savedId)
       if (selectedWeekend) {
         onSelect(selectedWeekend) // Notificamos al componente padre con el fin de semana restaurado
       }
     } else if (!savedId && currentWeekend && selectedId !== currentWeekend.id) {
-      // Si no hay valor guardado, seleccionamos el fin de semana actual solo una vez
-      setSelectedId(currentWeekend.id) // Seleccionamos el fin de semana actual por defecto
-      onSelect(currentWeekend) // Llamamos a onSelect para notificar el fin de semana actual
+      // Si no hay valor guardado, seleccionamos el fin de semana actual o siguiente
+      setSelectedId(currentWeekend.id) // Seleccionamos el fin de semana
+      onSelect(currentWeekend) // Llamamos a onSelect para notificar el fin de semana seleccionado
     }
   }, [weekends, selectedId, onSelect]) // Se ejecuta solo cuando `weekends` cambia o si `selectedId` cambia
 
