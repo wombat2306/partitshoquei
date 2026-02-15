@@ -39,22 +39,34 @@ export default function WeekendDropdown({
 
   // Llamado al montar el componente para restaurar la selección desde localStorage
   useEffect(() => {
-    const savedId = localStorage.getItem('selectedWeekendId') // Recuperamos el ID guardado
-    const currentWeekend = getCurrentWeekend()
+    if (!weekends.length) return
 
-    if (savedId && savedId !== selectedId) {
-      // Si hay un valor guardado y es diferente al seleccionado actual, lo restauramos
-      setSelectedId(savedId)
-      const selectedWeekend = weekends.find(w => w.id === savedId)
-      if (selectedWeekend) {
-        onSelect(selectedWeekend) // Notificamos al componente padre con el fin de semana restaurado
-      }
-    } else if (!savedId && currentWeekend && selectedId !== currentWeekend.id) {
-      // Si no hay valor guardado, seleccionamos el fin de semana actual o siguiente
-      setSelectedId(currentWeekend.id) // Seleccionamos el fin de semana
-      onSelect(currentWeekend) // Llamamos a onSelect para notificar el fin de semana seleccionado
+    const savedId = localStorage.getItem('selectedWeekendId')
+
+    let weekendToSelect: Weekend | undefined
+
+    if (savedId) {
+      weekendToSelect = weekends.find(w => w.id === savedId)
     }
-  }, [weekends, selectedId, onSelect]) // Se ejecuta solo cuando `weekends` cambia o si `selectedId` cambia
+
+    if (!weekendToSelect) {
+      const now = new Date()
+
+      weekendToSelect = weekends.find(w => {
+        const start = new Date(w.start)
+        const end = new Date(w.end)
+        end.setHours(23, 59, 59, 999)
+
+        return (start <= now && end >= now) || start > now
+      })
+    }
+
+    if (weekendToSelect) {
+      setSelectedId(weekendToSelect.id)
+      onSelect(weekendToSelect)
+    }
+  }, [weekends]) // 👈 SOLO weekends
+
 
   // Maneja el cambio de selección y lo guarda en localStorage
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
