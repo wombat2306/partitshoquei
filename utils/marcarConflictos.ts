@@ -20,8 +20,8 @@ export const marcarConflictos = (lista: any[]) => {
 
         // Regla 2: distinto local y menos de 2h
         if (partido.local !== otro.local && diffHoras < 2) {
-            console.log('Local : ', partido.local)
-            console.log('otro  : ', otro.local)
+            //console.log('Local : ', partido.local)
+            //console.log('otro  : ', otro.local)
             conflicto = true
             break
         }

@@ -204,35 +204,33 @@ export default function Ajustes() {
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
             <span className="text-base font-medium text-gray-600">Mixte Alevi</span>
             <img 
-                src={'/infantil.png'} 
+                src={'/juvenil.png'} 
                 className="w-8 h-8"
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-            <span className="text-base font-medium text-gray-600">Mixte Infantil</span>
+            <span className="text-base font-medium text-gray-600">Mixte Juvenil</span>
             <img 
                 src={'/minifem.png'} 
                 className="w-8 h-8"
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-            <span className="text-base font-medium text-gray-600">Mini Femeni</span>
+            <span className="text-base font-medium text-gray-600">Mini Fem</span>
             <img 
                 src={'/fem11.png'} 
                 className="w-8 h-8"
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-            <span className="text-base font-medium text-gray-600">Femeni 11</span>
+            <span className="text-base font-medium text-gray-600">Fem 11</span>
             <img 
                 src={'/fem13.png'} 
                 className="w-8 h-8"
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-            <span className="text-base font-medium text-gray-600">Femeni 13</span>
+            <span className="text-base font-medium text-gray-600">Fem 13</span>
             <img 
-                src={'/fem15.png'} 
+                src={'/fem17.png'} 
                 className="w-8 h-8"
                 style={{ width: "25px", height: "25px", objectFit: "contain" }} />
-            <span className="text-base font-medium text-gray-600">Femeni 15</span>
+            <span className="text-base font-medium text-gray-600">Fem 17</span>
           </div>
         </div>
       )}
-
-
     </div>
 
   )

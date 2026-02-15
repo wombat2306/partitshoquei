@@ -4,6 +4,7 @@ export default function PartidoCard({ partido }: any) {
   const [open, setOpen] = useState(false);
         //console.log("Render PartidoCard", partido.id);
 
+  /*
   const liga: Record<string, string> = {
     ceeb: '/ceeb.png',
     fecapa: '/fecapa.png'
@@ -15,6 +16,7 @@ export default function PartidoCard({ partido }: any) {
     alevi: '/alevi.png', 
     prebe: '/prebe.png', 
   };
+  */
 
   const [golesLocal, golesVisitante] = partido.resultado
   ? partido.resultado.split("-")
