@@ -49,6 +49,9 @@ export default function ModalSelectorEquipos({
               nombre,
               urlEscudo
             )`)
+          .order("idClub")
+          .order("orden_categoria")
+          .order("nombre")
 
       if (error) {
         console.error('Error cargando equipos:', error)

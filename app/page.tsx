@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import PartidoCard from '@/components/partidoCard'
 import Filtros from '@/components/filtros'
@@ -9,22 +9,27 @@ import { marcarConflictos } from '@/utils/marcarConflictos'
 
 export default function Home() {
   const [partidos, setPartidos] = useState<any[]>([])
-  const [filtros, setFiltros] = useState<any>({})
+  const [filtros, setFiltros] = useState<any>(null)
   const { equiposSeleccionados } = useEquipos()
 
-  const cargarPartidos = useCallback(async (filtros?: any) => {
+  const cargarPartidos = async (filtrosActuales?: any) => {
     let query = supabase
       .from('partido')
       .select(`*, equipo:idequipo (categoria, fecapa)`)
       .order('fecha_date', { ascending: true })
 
+    // 🔹 Filtro por equipos
     if (equiposSeleccionados.length > 0) {
-      query = query.in('idequipo', equiposSeleccionados.map(e => e.id))
+      query = query.in(
+        'idequipo',
+        equiposSeleccionados.map(e => e.id)
+      )
     }
 
-    if (filtros?.weekend) {
-      const start = new Date(filtros.weekend.start)
-      const end = new Date(filtros.weekend.end)
+    // 🔹 Filtro por fin de semana
+    if (filtrosActuales?.weekend?.start && filtrosActuales?.weekend?.end) {
+      const start = new Date(filtrosActuales.weekend.start)
+      const end = new Date(filtrosActuales.weekend.end)
       end.setHours(23, 59, 59, 999)
 
       query = query
@@ -32,23 +37,26 @@ export default function Home() {
         .filter('fecha_date', 'lte', end.toISOString())
     }
 
-    const { data } = await query
+    const { data, error } = await query
+
+    if (error) {
+      console.error(error)
+      setPartidos([])
+      return
+    }
 
     if (data) {
-      const partidosConConflicto = marcarConflictos(data)
-      setPartidos(partidosConConflicto)
+      setPartidos(marcarConflictos(data))
     } else {
       setPartidos([])
     }
+  }
 
-    //setPartidos(data || [])
-  }, [equiposSeleccionados])
-
-  // SOLO se ejecuta cuando hay filtros válidos
+  // 🔥 Se ejecuta siempre que cambien filtros o equipos
   useEffect(() => {
-    if (!filtros.weekend) return
+    if (!filtros) return
     cargarPartidos(filtros)
-  }, [filtros, cargarPartidos])
+  }, [filtros, equiposSeleccionados])
 
   return (
     <main className="p-4 max-w-md mx-auto space-y-4">
@@ -64,5 +72,3 @@ export default function Home() {
     </main>
   )
 }
-
-

@@ -1,13 +1,24 @@
 import { useState, useCallback } from 'react'
 import WeekendDropdown from './weekendDropdown'
+import { Weekend } from '@/utils/getWeekends'
 
-export default function Filtros({ onChangeFilters }: any) {
-  const [weekend, setWeekend] = useState<any>(null)
+type Props = {
+  onChangeFilters: (filters: any) => void
+}
 
-  const handleSelect = useCallback((w: any) => {
-    setWeekend(w)
-    onChangeFilters({ weekend: w })
-  }, [onChangeFilters])
+export default function Filtros({ onChangeFilters }: Props) {
+  const [weekend, setWeekend] = useState<Weekend | null>(null)
+
+  const handleSelect = useCallback(
+    (w: Weekend | null) => {
+      setWeekend(w)
+      onChangeFilters((prev: any) => ({
+        ...prev,
+        weekend: w,
+      }))
+    },
+    [onChangeFilters]
+  )
 
   return (
     <div className="p-4 bg-white shadow rounded-xl">

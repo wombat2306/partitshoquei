@@ -12,32 +12,13 @@ export default function WeekendDropdown({
   monthsAhead = 6,
   onSelect,
 }: Props) {
-  const weekends = useMemo(() => getWeekends(monthsAhead), [monthsAhead])
+  const weekends = useMemo(
+    () => getWeekends(monthsAhead),
+    [monthsAhead]
+  )
+
   const [selectedId, setSelectedId] = useState<string>('')
 
-  // Encuentra el fin de semana actual o el siguiente
-  const getCurrentWeekend = () => {
-    const now = new Date()
-    const dayOfWeek = now.getDay() // 0 = Domingo, 6 = Sábado
-
-    // Si es fin de semana (sábado o domingo), seleccionamos el actual
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      return weekends.find((w) => {
-        const start = new Date(w.start)
-        const end = new Date(w.end)
-        return start <= now && end >= now
-      })
-    } else {
-      // Si es entre semana, seleccionamos el siguiente fin de semana
-      return weekends.find((w) => {
-        const start = new Date(w.start)
-        const end = new Date(w.end)
-        return start > now // Solo seleccionar el siguiente fin de semana
-      })
-    }
-  }
-
-  // Llamado al montar el componente para restaurar la selección desde localStorage
   useEffect(() => {
     if (!weekends.length) return
 
@@ -45,42 +26,49 @@ export default function WeekendDropdown({
 
     let weekendToSelect: Weekend | undefined
 
+    // 🔹 1️⃣ Intentar restaurar guardado
     if (savedId) {
       weekendToSelect = weekends.find(w => w.id === savedId)
     }
 
-    if (!weekendToSelect) {
-      const now = new Date()
+    const now = new Date()
 
+    // 🔹 2️⃣ Si no hay guardado válido → buscar actual
+    if (!weekendToSelect) {
       weekendToSelect = weekends.find(w => {
         const start = new Date(w.start)
         const end = new Date(w.end)
         end.setHours(23, 59, 59, 999)
+        return start <= now && end >= now
+      })
+    }
 
-        return (start <= now && end >= now) || start > now
+    // 🔹 3️⃣ Si no estamos en fin de semana → siguiente
+    if (!weekendToSelect) {
+      weekendToSelect = weekends.find(w => {
+        const start = new Date(w.start)
+        return start > now
       })
     }
 
     if (weekendToSelect) {
       setSelectedId(weekendToSelect.id)
       onSelect(weekendToSelect)
+      localStorage.setItem('selectedWeekendId', weekendToSelect.id)
     }
-  }, [weekends]) // 👈 SOLO weekends
+  }, [weekends, onSelect])
 
-
-  // Maneja el cambio de selección y lo guarda en localStorage
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = e.target.value
     setSelectedId(id)
 
     const weekend = weekends.find(w => w.id === id) || null
-    onSelect(weekend) // Llamamos a onSelect con el fin de semana seleccionado
+    onSelect(weekend)
 
-    // Guardamos la selección en localStorage
     if (id) {
       localStorage.setItem('selectedWeekendId', id)
     } else {
-      localStorage.removeItem('selectedWeekendId') // Si se selecciona "Cap de setmana", eliminamos el valor
+      localStorage.removeItem('selectedWeekendId')
     }
   }
 
