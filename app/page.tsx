@@ -54,9 +54,15 @@ export default function Home() {
 
   // 🔥 Se ejecuta siempre que cambien filtros o equipos
   useEffect(() => {
-    if (!filtros) return
+    if (!filtros?.weekend) return
     cargarPartidos(filtros)
-  }, [filtros, equiposSeleccionados])
+  }, [filtros])
+
+  useEffect(() => {
+    if (!filtros?.weekend) return
+    cargarPartidos(filtros)
+  }, [equiposSeleccionados])
+
 
   return (
     <main className="p-4 max-w-md mx-auto space-y-4">
