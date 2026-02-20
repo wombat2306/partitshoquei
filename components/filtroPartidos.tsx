@@ -1,80 +1,20 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import WeekendDropdown from './weekendDropdown'
 import ModalSelectorEquipos from './ModalSelectorEquipos'
 import type { Equipo } from '@/app/types/equipo'
 import type { Weekend } from '@/utils/getWeekends'
 
-export default function FiltroPartidos({ onFiltrar }: any) {
+type Props = {
+  onFiltrar: (filters: any) => void
+}
+
+export default function FiltroPartidos({ onFiltrar }: Props) {
   const [weekend, setWeekend] = useState<Weekend | null>(null)
   const [fechaFin, setFechaFin] = useState<string>('')
   const [open, setOpen] = useState(false)
   const [seleccionados, setSeleccionados] = useState<Equipo[]>([])
-
-  const handleSelect = (selectedWeekend: Weekend | null) => {
-    if (!selectedWeekend) {
-      setWeekend(null)
-      setFechaFin('')
-
-      onFiltrar({
-        weekend: null,
-        fechaFin: '',
-        equipos: seleccionados
-      })
-
-      return
-    }
-
-    setWeekend(selectedWeekend)
-
-    if (fechaFin) {
-      const minFecha = getMinFechaFin(selectedWeekend)
-      if (new Date(fechaFin) < minFecha) {
-        setFechaFin('')
-      }
-    }
-
-    onFiltrar({
-      weekend: selectedWeekend,
-      fechaFin,
-      equipos: seleccionados
-    })
-  }
-
-  const handleFechaFinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nuevaFechaFin = e.target.value
-
-    if (weekend) {
-      const minFecha = getMinFechaFin(weekend)
-
-      if (new Date(nuevaFechaFin) < minFecha) {
-        alert('La fecha fin debe ser al menos un día posterior al fin de semana seleccionado')
-        return
-      }
-    }
-
-    setFechaFin(nuevaFechaFin)
-
-    onFiltrar({
-      weekend,
-      fechaFin: nuevaFechaFin,
-      equipos: seleccionados
-    })
-  }
-
-  useEffect(() => {
-    onFiltrar({
-      weekend,
-      fechaFin,
-      equipos: seleccionados
-    })
-  }, [weekend, fechaFin, seleccionados])
-
-  useEffect(() => {
-    if (!weekend) setFechaFin('')
-  }, [weekend])
-
 
   // 🔹 Fecha mínima = 1 día después de weekend.end
   const getMinFechaFin = (w: Weekend) => {
@@ -82,6 +22,64 @@ export default function FiltroPartidos({ onFiltrar }: any) {
     min.setDate(min.getDate() + 1)
     return min
   }
+
+  // 🔹 Manejo weekend (igual patrón que el primer componente)
+  const handleSelect = useCallback(
+    (selectedWeekend: Weekend | null) => {
+      setWeekend(selectedWeekend)
+
+      setFechaFin(prevFecha => {
+        if (!selectedWeekend) return ''
+
+        if (prevFecha) {
+          const minFecha = getMinFechaFin(selectedWeekend)
+          if (new Date(prevFecha) < minFecha) {
+            return ''
+          }
+        }
+
+        return prevFecha
+      })
+
+      onFiltrar((prev: any) => ({
+        ...prev,
+        weekend: selectedWeekend,
+      }))
+    },
+    [onFiltrar]
+  )
+
+  // 🔹 Manejo fecha fin
+  const handleFechaFinChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const nuevaFechaFin = e.target.value
+
+      if (weekend) {
+        const minFecha = getMinFechaFin(weekend)
+
+        if (new Date(nuevaFechaFin) < minFecha) {
+          alert('La fecha fin debe ser al menos un día posterior al fin de semana seleccionado')
+          return
+        }
+      }
+
+      setFechaFin(nuevaFechaFin)
+
+      onFiltrar((prev: any) => ({
+        ...prev,
+        fechaFin: nuevaFechaFin,
+      }))
+    },
+    [weekend, onFiltrar]
+  )
+
+  // 🔹 Cuando cambian equipos
+  useEffect(() => {
+    onFiltrar((prev: any) => ({
+      ...prev,
+      equipos: seleccionados,
+    }))
+  }, [seleccionados, onFiltrar])
 
   const minFechaFin = weekend
     ? getMinFechaFin(weekend).toISOString().split('T')[0]
@@ -105,7 +103,7 @@ export default function FiltroPartidos({ onFiltrar }: any) {
         />
 
         <div className="justify-self-end">
-          <WeekendDropdown monthsAhead={5} onSelect={handleSelect} />
+          <WeekendDropdown monthsAhead={4} onSelect={handleSelect} />
         </div>
 
         {weekend && (
@@ -119,7 +117,6 @@ export default function FiltroPartidos({ onFiltrar }: any) {
             />
           </div>
         )}
-
       </div>
     </div>
   )
