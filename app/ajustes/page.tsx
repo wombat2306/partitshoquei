@@ -35,6 +35,10 @@ export default function Ajustes() {
               urlEscudo
             )
           `)
+        
+        .order("idClub")
+        .order("orden_categoria")
+        .order("nombre")
 
       if (equiposError) {
         console.error(equiposError)

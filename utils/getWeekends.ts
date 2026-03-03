@@ -12,7 +12,7 @@ export function getWeekends(monthsAhead = 6): Weekend[] {
   endDate.setMonth(today.getMonth() + monthsAhead)
 
   const current = new Date(today)
-  current.setDate(current.getDate() - 10)
+  current.setDate(current.getDate() - 20)
 
   while (current <= endDate) {
     if (current.getDay() === 6) { // sábado
