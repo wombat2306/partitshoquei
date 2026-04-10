@@ -268,7 +268,8 @@ export default function SocialAgendaPage() {
         <Filtros onChangeFilters={setFiltros} />
 
         <button onClick={handleDownload} className="
-          px-3 py-2
+          px-3 py-0.5
+          text-sm
           bg-gradient-to-r from-red-900 to-red-500
           text-white
           font-semibold
@@ -281,12 +282,12 @@ export default function SocialAgendaPage() {
 
         <button
           onClick={handleDownloadReelFrames}
-          className="px-3 py-2 bg-black text-white rounded-lg"
+          className="px-3 py-1 bg-black text-white rounded-lg"
         >
           Des. REEL
         </button>
-
-        
+      </div>
+      <div className="flex gap-4">
         <div className="flex gap-2 mb-4">
           {['post', 'story', 'reel'].map((f) => (
             <button
