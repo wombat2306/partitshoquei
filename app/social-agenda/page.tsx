@@ -92,7 +92,7 @@ export default function SocialAgendaPage() {
   const formatConfig = {
     post: { width: 1080, height: 1350, top: 30, bottom: 10 },
     story: { width: 1080, height: 1920, top: 40, bottom: 10  },
-    reel: { width: 1080, height: 1920, top: 50, bottom: 10  }
+    reel: { width: 1080, height: 1920, top: 40, bottom: 10  }
   }
 
   const { width, height, top, bottom } = formatConfig[format]
