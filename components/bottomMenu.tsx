@@ -11,6 +11,7 @@ const items = [
   { href: '/partidos', label: 'Todos', icon: '📅' },
   { href: '/clasificacion', label: 'Clasificación', icon: '🏆' },
   { href: '/ajustes', label: 'Ajustes', icon: '⚙️' },
+  // { href: '/login', label: 'Socios', icon: '🔐' },
   //{ href: '/social-agenda', label: 'XXSS', icon: '📲' },
 ]
 
