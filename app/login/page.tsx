@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import LoginForm from "@/components/loginForm";
 
 export default function LoginPage() {
@@ -10,7 +11,7 @@ export default function LoginPage() {
             <img
               src="/sagrerenc.jpg"
               alt="Hockey"
-              className="w-16 h-16 object-contain"
+              className="h-16 w-16 object-contain"
             />
           </div>
 
@@ -24,7 +25,15 @@ export default function LoginPage() {
         </div>
 
         <div className="rounded-3xl bg-white p-6 shadow-sm">
-          <LoginForm />
+          <Suspense
+            fallback={
+              <div className="py-4 text-center text-sm text-gray-500">
+                Cargando...
+              </div>
+            }
+          >
+            <LoginForm />
+          </Suspense>
         </div>
 
       </div>
