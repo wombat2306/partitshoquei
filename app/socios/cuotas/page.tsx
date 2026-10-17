@@ -47,9 +47,9 @@ export default function CuotasSocioPage() {
   const [jugadores, setJugadores] = useState<Jugador[]>([]);
   const [cuotas, setCuotas] = useState<Cuota[]>([]);
 
-  const [jugadorSeleccionado, setJugadorSeleccionado] = useState<number | null>(
-    null
-  );
+  const [jugadorSeleccionado, setJugadorSeleccionado] = useState<
+    number | "todos"
+  >("todos");
 
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -127,9 +127,8 @@ export default function CuotasSocioPage() {
       setJugadores(jugadoresData);
       setCuotas(cuotasData);
 
-      if (jugadoresData.length > 0) {
-        setJugadorSeleccionado(jugadoresData[0].id);
-      }
+      setJugadorSeleccionado("todos");
+
     } catch (err) {
       console.error(err);
 
@@ -144,8 +143,8 @@ export default function CuotasSocioPage() {
   }
 
   const cuotasJugador = useMemo(() => {
-    if (!jugadorSeleccionado) {
-      return [];
+    if (jugadorSeleccionado === "todos") {
+      return cuotas;
     }
 
     return cuotas.filter(
@@ -368,37 +367,49 @@ export default function CuotasSocioPage() {
         </section>
 
             {/* SELECTOR DE JUGADORES */}
-            {jugadores.length > 1 && (
-              <section className="rounded-2xl bg-white p-3 shadow-sm">
-                <div className="mb-2 text-[11px] font-medium uppercase tracking-wide text-gray-400">
-                  Jugador
-                </div>
+<section className="rounded-2xl bg-white p-3 shadow-sm">
+  <div className="mb-2 text-[11px] font-medium uppercase tracking-wide text-gray-400">
+    Mostrar cuotas
+  </div>
 
-                <div className="flex gap-2 overflow-x-auto">
-                  {jugadores.map((jugador) => {
-                    const seleccionado =
-                      jugador.id === jugadorSeleccionado;
+  <div className="flex gap-2 overflow-x-auto">
+    {/* TODOS */}
+    <button
+      type="button"
+      onClick={() => setJugadorSeleccionado("todos")}
+      className={`shrink-0 rounded-lg px-3 py-2 text-sm transition ${
+        jugadorSeleccionado === "todos"
+          ? "bg-blue-600 font-medium text-white"
+          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+      }`}
+    >
+      Todos
+    </button>
 
-                    return (
-                      <button
-                        key={jugador.id}
-                        type="button"
-                        onClick={() =>
-                          setJugadorSeleccionado(jugador.id)
-                        }
-                        className={`shrink-0 rounded-lg px-3 py-2 text-sm transition ${
-                          seleccionado
-                            ? "bg-blue-600 font-medium text-white"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {jugador.nombre}
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            )}
+    {/* JUGADORES */}
+    {jugadores.map((jugador) => {
+      const seleccionado =
+        jugador.id === jugadorSeleccionado;
+
+      return (
+        <button
+          key={jugador.id}
+          type="button"
+          onClick={() =>
+            setJugadorSeleccionado(jugador.id)
+          }
+          className={`shrink-0 rounded-lg px-3 py-2 text-sm transition ${
+            seleccionado
+              ? "bg-blue-600 font-medium text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          {jugador.nombre}
+        </button>
+      );
+    })}
+  </div>
+</section>
 
             {/* JUGADOR */}
             {jugadorSeleccionado && (

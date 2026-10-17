@@ -202,7 +202,7 @@ export default async function SociosPage() {
           <div className="mb-5 space-y-3">
 
             {/* CUOTAS */}
-            {puedeVerCuotas && (
+            {false && puedeVerCuotas && (
               <Link
                 href="/socios/cuotas"
                 className="

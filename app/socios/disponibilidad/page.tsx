@@ -642,33 +642,26 @@ export default function DisponibilidadPage() {
           <section className="mt-6">
 
             <div className="mb-4">
-            {/* 
-                <h2 className="text-xl font-bold text-gray-900">
-                Fin de semana
-                 </h2>
-            */}
-
-              <p className="text-base font-bold capitalize text-gray-500">
+          <p className="text-base font-bold capitalize text-gray-500">
                 {format(
                   selectedWeekend,
-                  "EEEE d 'de' MMMM",
+                  "MM/dd/yyyy",
                   {
                     locale: es,
                   }
                 )}
-                </p>
-                <p className="text-base font-bold capitalize text-gray-500">
+                {" - "}
                 {format(
                   addDays(
                     selectedWeekend,
                     1
                   ),
-                  "EEEE d 'de' MMMM",
+                  "MM/dd/yyyy",
                   {
                     locale: es,
                   }
                 )}
-              </p>
+                </p>
             </div>
 
             {/* JUGADORES */}

@@ -164,16 +164,16 @@ export default function CuotasAdminPage() {
   function nombreEstado(estado: string | null) {
     switch (estado) {
       case "pagado_ok":
-        return "Pagado";
+        return "Paga.";
 
       case "pendiente_revision":
-        return "Revisar";
+        return "Revi.";
 
       case "anulada":
-        return "Anulada";
+        return "Anul.";
 
       default:
-        return "Pendiente";
+        return "Pend.";
     }
   }
 
@@ -670,18 +670,12 @@ export default function CuotasAdminPage() {
                         {nombreJugador(cuota.jugador_id)}
                       </div>
 
-                      <div className="mt-0.5 text-[11px] text-gray-400 sm:hidden">
-                        {MESES[cuota.mes - 1]} {cuota.anio}
-                      </div>
+                     
                     </div>
 
-                    {/* MES */}
-                    <div className="hidden w-[90px] shrink-0 text-xs text-gray-500 sm:block">
-                      {MESES[cuota.mes - 1]} {cuota.anio}
-                    </div>
 
                     {/* IMPORTE */}
-                    <div className="w-[70px] shrink-0 text-right sm:w-[85px] sm:text-left">
+                    <div className="w-[60px] shrink-0 text-right sm:w-[85px] sm:text-left">
                       {editandoImporte === cuota.id ? (
                         <input
                           autoFocus
