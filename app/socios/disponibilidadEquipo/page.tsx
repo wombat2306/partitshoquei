@@ -101,6 +101,7 @@ export default function DisponibilidadEquipoPage() {
 
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [mostrarJugadores, setMostrarJugadores] = useState(false);
+  const [momentoSeleccionado, setMomentoSeleccionado] = useState<Momento | null>(null);
 
 
   /*
@@ -1288,24 +1289,24 @@ const resultado = (fases ?? [])
 
                       <ResumenFranja
                         titulo="Mañana"
-                        resumen={getResumen(
-                          "sabado_manana"
-                        )}
-                        partido={
-                          momentoPartido ===
-                          "sabado_manana"
-                        }
+                        resumen={getResumen("sabado_manana")}
+                        partido={momentoPartido === "sabado_manana"}
+                        seleccionado={momentoSeleccionado === "sabado_manana"}
+                        onClick={() => {
+                          setMomentoSeleccionado("sabado_manana");
+                          setMostrarJugadores(true);
+                        }}
                       />
 
                       <ResumenFranja
                         titulo="Tarde"
-                        resumen={getResumen(
-                          "sabado_tarde"
-                        )}
-                        partido={
-                          momentoPartido ===
-                          "sabado_tarde"
-                        }
+                        resumen={getResumen("sabado_tarde")}
+                        partido={momentoPartido === "sabado_tarde"}
+                        seleccionado={momentoSeleccionado === "sabado_tarde"}
+                        onClick={() => {
+                          setMomentoSeleccionado("sabado_tarde");
+                          setMostrarJugadores(true);
+                        }}
                       />
 
                     </div>
@@ -1320,24 +1321,24 @@ const resultado = (fases ?? [])
 
                       <ResumenFranja
                         titulo="Mañana"
-                        resumen={getResumen(
-                          "domingo_manana"
-                        )}
-                        partido={
-                          momentoPartido ===
-                          "domingo_manana"
-                        }
+                        resumen={getResumen("domingo_manana")}
+                        partido={momentoPartido === "domingo_manana"}
+                        seleccionado={momentoSeleccionado === "domingo_manana"}
+                        onClick={() => {
+                          setMomentoSeleccionado("domingo_manana");
+                          setMostrarJugadores(true);
+                        }}
                       />
 
                       <ResumenFranja
                         titulo="Tarde"
-                        resumen={getResumen(
-                          "domingo_tarde"
-                        )}
-                        partido={
-                          momentoPartido ===
-                          "domingo_tarde"
-                        }
+                        resumen={getResumen("domingo_tarde")}
+                        partido={momentoPartido === "domingo_tarde"}
+                        seleccionado={momentoSeleccionado === "domingo_tarde"}
+                        onClick={() => {
+                          setMomentoSeleccionado("domingo_tarde");
+                          setMostrarJugadores(true);
+                        }}
                       />
 
                     </div>
@@ -1345,88 +1346,102 @@ const resultado = (fases ?? [])
 
                   {/* DETALLE DE JUGADORES */}
 
+                  {momentoSeleccionado && (
+                    <section className="mt-6">
 
-<section className="mt-6">
+                      <div className="mb-4 flex items-center justify-between">
 
-<button
-type="button"
-onClick={() =>
-setMostrarJugadores(
-!mostrarJugadores
-)
-}
-className="flex w-full items-center justify-between rounded-2xl bg-white p-4 text-left shadow-sm"
+                        <div>
+                          <h2 className="text-lg font-bold text-gray-900">
+                            Jugadores
+                          </h2>
 
->
+                          <p className="mt-1 text-sm text-gray-500">
+                            {getNombreMomento(momentoSeleccionado)}
+                          </p>
+                        </div>
 
-<div>
+                        <button
+                          type="button"
+                          onClick={() => setMomentoSeleccionado(null)}
+                          className="rounded-xl bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-600"
+                        >
+                          Cerrar
+                        </button>
 
-  <h2 className="text-lg font-bold text-gray-900">
-    Jugadores
-  </h2>
+                      </div>
 
-  <p className="mt-1 text-sm text-gray-500">
-    {jugadores.length}{" "}
-    {jugadores.length === 1
-      ? "jugador"
-      : "jugadores"}{" "}
-    · Ver detalle de disponibilidad
-  </p>
+                      {jugadores.length === 0 ? (
+                        <div className="rounded-2xl bg-white p-5 text-center shadow-sm">
+                          <p className="text-sm text-gray-500">
+                            Este equipo no tiene jugadores asignados.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
 
-</div>
+                          {jugadores.map((jugador) => {
+                            const disponibilidad =
+                              getDisponibilidad(jugador.id);
 
-<span
-  className="ml-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 text-lg text-gray-600"
-  aria-hidden="true"
->
-  {mostrarJugadores
-    ? "−"
-    : "+"}
-</span>
+                            const disponible =
+                              disponibilidad[momentoSeleccionado];
 
-  </button>
+                            return (
+                              <div
+                                key={jugador.id}
+                                className={`
+                                  flex items-center justify-between
+                                  rounded-2xl border p-4
+                                  ${
+                                    disponible
+                                      ? "border-green-200 bg-green-50"
+                                      : "border-red-200 bg-red-50"
+                                  }
+                                `}
+                              >
 
-{mostrarJugadores && ( <div className="mt-3">
+                                <div className="min-w-0">
 
-  {jugadores.length === 0 ? (
-    <div className="rounded-2xl bg-white p-5 text-center shadow-sm">
+                                  <p className="truncate font-bold text-gray-900">
+                                    {[jugador.nombre, jugador.apellidos]
+                                      .filter(Boolean)
+                                      .join(" ") ||
+                                      `Jugador ${jugador.id}`}
+                                  </p>
 
-      <p className="text-sm text-gray-500">
-        Este equipo no tiene
-        jugadores asignados.
-      </p>
+                                  {jugador.esportero && (
+                                    <p className="text-xs font-medium text-blue-600">
+                                      Portero
+                                    </p>
+                                  )}
 
-    </div>
-  ) : (
-    <div className="space-y-3">
+                                </div>
 
-      {jugadores.map(
-        (jugador) => {
-          const disponibilidad =
-            getDisponibilidad(
-              jugador.id
-            );
+                                <span
+                                  className={`
+                                    ml-3 shrink-0 text-sm font-bold
+                                    ${
+                                      disponible
+                                        ? "text-green-700"
+                                        : "text-red-700"
+                                    }
+                                  `}
+                                >
+                                  {disponible
+                                    ? "✓ Disponible"
+                                    : "✕ No disponible"}
+                                </span>
 
-          return (
-            <JugadorDisponibilidad
-              key={jugador.id}
-              jugador={jugador}
-              disponibilidad={
-                disponibilidad
-              }
-            />
-          );
-        }
-      )}
+                              </div>
+                            );
+                          })}
 
-    </div>
-  )}
+                        </div>
+                      )}
 
-</div>
-
-)}
-
-</section>
+                    </section>
+                  )}
 
                 </>
               )}
@@ -1444,37 +1459,49 @@ function ResumenFranja({
   titulo,
   resumen,
   partido,
+  seleccionado,
+  onClick,
 }: {
   titulo: string;
   resumen: ResumenMomento;
   partido: boolean;
+  seleccionado: boolean;
+  onClick: () => void;
 }) {
   let colores =
     "border-green-200 bg-green-50";
 
   if (
     resumen.total > 0 &&
-    resumen.disponibles <=
-      resumen.total / 2
+    resumen.disponibles <= resumen.total / 2
   ) {
     colores =
       "border-red-200 bg-red-50";
   } else if (
     resumen.total > 0 &&
-    resumen.disponibles <
-      resumen.total
+    resumen.disponibles < resumen.total
   ) {
     colores =
       "border-yellow-200 bg-yellow-50";
   }
 
   return (
-    <div
+    <button
+      type="button"
+      onClick={onClick}
       className={`
+        w-full
         rounded-2xl
         border
         p-3
+        text-left
+        transition
         ${colores}
+        ${
+          seleccionado
+            ? "ring-2 ring-blue-500 ring-offset-2"
+            : ""
+        }
         ${
           partido
             ? "ring-2 ring-blue-500 ring-offset-1"
@@ -1503,7 +1530,13 @@ function ResumenFranja({
           / {resumen.total} disponibles
         </span>
       </p>
-    </div>
+
+      <p className="mt-1 text-xs font-medium text-gray-500">
+        {seleccionado
+          ? "Franja seleccionada ✓"
+          : "Ver jugadores →"}
+      </p>
+    </button>
   );
 }
 

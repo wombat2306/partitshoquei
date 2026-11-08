@@ -1,6 +1,7 @@
+
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,7 +13,41 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function checkSession() {
+      const supabase = createClient();
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!mounted) return;
+
+      if (user) {
+        const next = searchParams.get("next");
+
+        // Evitamos redirecciones a páginas externas.
+        const destination =
+          next?.startsWith("/") && !next.startsWith("//")
+            ? next
+            : "/socios";
+
+        router.replace(destination);
+        router.refresh();
+      } else {
+        setCheckingSession(false);
+      }
+    }
+
+    checkSession();
+
+    return () => {
+      mounted = false;
+    };
+  }, [router, searchParams]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,14 +68,23 @@ export default function LoginForm() {
       return;
     }
 
-    /*
-     * Si el usuario intentó entrar directamente en una página
-     * privada, volvemos a esa página.
-     */
     const next = searchParams.get("next");
 
-    router.replace(next || "/socios");
+    const destination =
+      next?.startsWith("/") && !next.startsWith("//")
+        ? next
+        : "/socios";
+
+    router.replace(destination);
     router.refresh();
+  }
+
+  if (checkingSession) {
+    return (
+      <div className="py-6 text-center text-sm text-gray-500">
+        Comprobando sesión...
+      </div>
+    );
   }
 
   return (
@@ -109,15 +153,7 @@ export default function LoginForm() {
       </div>
 
       {error && (
-        <div
-          className="
-            rounded-xl
-            bg-red-50
-            px-4 py-3
-            text-sm
-            text-red-700
-          "
-        >
+        <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -126,14 +162,10 @@ export default function LoginForm() {
         type="submit"
         disabled={loading}
         className="
-          w-full
-          rounded-xl
-          bg-blue-600
-          px-4 py-3
-          font-semibold
-          text-white
-          transition
-          hover:bg-blue-700
+          w-full rounded-xl
+          bg-blue-600 px-4 py-3
+          font-semibold text-white
+          transition hover:bg-blue-700
           disabled:cursor-not-allowed
           disabled:opacity-60
         "
@@ -141,13 +173,10 @@ export default function LoginForm() {
         {loading ? "Entrando..." : "Iniciar sesión"}
       </button>
 
-
       <div className="text-center">
         <button
           type="button"
-          onClick={() =>
-            router.push("/recuperar-contrasena")
-          }
+          onClick={() => router.push("/recuperar-contrasena")}
           className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline"
         >
           He olvidado la contraseña
